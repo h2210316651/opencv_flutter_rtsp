@@ -82,12 +82,18 @@ void TestPlugin::HandleMethodCall(
   if (method_call.method_name().compare("getPlatformVersion") == 0) {
     std::ostringstream version_stream;
     std::string url;
+    std::string fname;
     const auto* arguments = std::get_if< flutter::EncodableMap>(method_call.arguments());
     if (arguments) {
     auto url_it = arguments->find(flutter::EncodableValue("url"));
     if (url_it != arguments->end()) {
       url = std::get<std::string>(url_it->second);
       std::cout<<url<<std::endl;
+    }
+    auto url_it2 = arguments->find(flutter::EncodableValue("fname"));
+    if (url_it2 != arguments->end()) {
+      fname = std::get<std::string>(url_it2->second);
+      std::cout<<fname<<std::endl;
     }
   }
     try{
@@ -103,7 +109,7 @@ void TestPlugin::HandleMethodCall(
               std::cout<<"error grabbing fame"<<std::endl;
             }
           else{
-             cv::imwrite("C:\\Users\\Srinath\\Desktop\\test.jpeg",frame);
+             cv::imwrite(fname,frame);
           }
           }
           else{

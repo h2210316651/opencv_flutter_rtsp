@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -50,15 +52,19 @@ class _MyAppState extends State<MyApp> {
             children: [
               RaisedButton(
                 onPressed: () async {
-                  Test a = new Test();
-                  try {
-                    await compute(a.getFrames(), "").then((b) {
-                      print("done");
-                      setState(() {
-                        _platformVersion = b;
-                      });
-                    });
-                  } catch (e) {}
+                  Test a = new Test(
+                      "192.168.0.155",
+                      "rtsp://admin:kkk2019@192.168.0.155/cam/realmonitor?channel=1&subtype=0",
+                      "C:\\Users\\Srinath\\Desktop\\test.jpeg");
+                  a.checkping().listen((event) async {
+                    print(event.error);
+                    if (event.error == null) {
+                      await a.getFrames().invokeMethod('getPlatformVersion',
+                          {"url": a.cameraurl, "fname": a.imagename});
+                    } else {
+                      print("error initialising camera");
+                    }
+                  });
                 },
                 child: Text("take picture"),
               ),

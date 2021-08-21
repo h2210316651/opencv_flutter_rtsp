@@ -1,10 +1,8 @@
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:flutter/services.dart';
+
 import 'package:test/test.dart';
+import 'package:dart_ping/dart_ping.dart';
 
 void main() {
   runApp(MyApp());
@@ -57,8 +55,8 @@ class _MyAppState extends State<MyApp> {
                       "rtsp://admin:kkk2019@192.168.0.155/cam/realmonitor?channel=1&subtype=0",
                       "C:\\Users\\Srinath\\Desktop\\test.jpeg");
                   a.checkping().listen((event) async {
-                    print(event.error);
-                    if (event.error == null) {
+                    print(event.summary?.received);
+                    if (event.summary?.received != 0 && event.summary != null) {
                       await a.getFrames().invokeMethod('getPlatformVersion',
                           {"url": a.cameraurl, "fname": a.imagename});
                     } else {
